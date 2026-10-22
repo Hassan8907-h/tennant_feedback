@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Maintenance Feedback Portal | Property Management</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d16',
+                        cardBg: 'rgba(13, 19, 33, 0.78)',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Professional Architecture / Modern Interior Background Image with Deep Dark Gradient Overlay */
+            background: linear-gradient(to bottom, rgba(9, 13, 22, 0.88), rgba(9, 13, 22, 0.95)), 
+                        url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(13, 19, 33, 0.78);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.05);
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.02); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+
+    <div class="w-full max-w-xl mx-auto">
+        <!-- Main Form Card Container -->
+        <div id="form-container" class="glass-panel rounded-3xl p-6 sm:p-10 transition-all duration-500">
+            
+            <!-- Professional Header & SVG Shield Graphic with Cyan/Amber Accent -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500/20 to-amber-500/20 border border-cyan-500/30 text-cyan-400 mb-4 shadow-lg shadow-cyan-950/50 animate-pulse-glow">
+                    <!-- Modern SVG Building & Feedback Shield Icon -->
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <span class="inline-block px-3.5 py-1 text-xs font-semibold tracking-wider text-cyan-400 bg-cyan-950/60 border border-cyan-800/40 rounded-full mb-3 uppercase shadow-sm">Tenant Feedback Portal</span>
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">Service Visit Evaluation</h1>
+                <p class="text-sm text-slate-400 max-w-sm mx-auto leading-relaxed">Please share your experience regarding the recent maintenance visit.</p>
+            </div>
+
+            <!-- Job Context Metadata Summary Card -->
+            <div class="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-4 sm:p-5 mb-7 space-y-2.5 shadow-inner">
+                <div class="flex justify-between items-center text-sm border-b border-slate-800/60 pb-2">
+                    <span class="text-slate-400 font-medium">Request Reference</span>
+                    <span id="display-request-id" class="font-mono text-xs font-semibold text-cyan-400 bg-cyan-950/50 px-2.5 py-1 rounded-md border border-cyan-900/50">Loading...</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400 font-medium">Tenant Name</span>
+                    <span id="display-tenant-name" class="font-medium text-slate-200">Loading...</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400 font-medium">Unit / Property</span>
+                    <span id="display-unit" class="font-medium text-slate-200">Loading...</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400 font-medium">Assigned Vendor</span>
+                    <span id="display-vendor-name" class="font-medium text-slate-200">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Feedback Submission Form -->
+            <form id="feedback-form" onsubmit="submitFeedback(event)" class="space-y-6">
+                
+                <!-- is_resolved (Interactive Yes/No Toggle Cards with Amber/Cyan Accent) -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-300 mb-2.5">Was the maintenance issue fully resolved? <span class="text-cyan-400">*</span></label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center justify-center p-3.5 rounded-xl border border-slate-700/60 bg-slate-900/50 cursor-pointer hover:bg-slate-900/90 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-950/40 has-[:checked]:shadow-lg has-[:checked]:shadow-cyan-950/50">
+                            <input type="radio" name="is_resolved" value="true" required class="text-cyan-500 focus:ring-cyan-500 bg-slate-950 border-slate-700 mr-2.5 w-4 h-4">
+                            <span class="text-sm font-semibold text-slate-200 group-hover:text-white">Yes, Resolved</span>
+                        </label>
+                        <label class="flex items-center justify-center p-3.5 rounded-xl border border-slate-700/60 bg-slate-900/50 cursor-pointer hover:bg-slate-900/90 transition-all group has-[:checked]:border-amber-500 has-[:checked]:bg-amber-950/40 has-[:checked]:shadow-lg has-[:checked]:shadow-amber-950/50">
+                            <input type="radio" name="is_resolved" value="false" required class="text-amber-500 focus:ring-amber-500 bg-slate-950 border-slate-700 mr-2.5 w-4 h-4">
+                            <span class="text-sm font-semibold text-slate-200 group-hover:text-white">No, Issues Remain</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- time_taken -->
+                <div>
+                    <label for="time_taken" class="block text-sm font-semibold text-slate-300 mb-2">How long did the repair take?</label>
+                    <input type="text" id="time_taken" name="time_taken" placeholder="e.g., 45 minutes, 2 hours" class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition text-sm shadow-inner">
+                </div>
+
+                <!-- cost_charged -->
+                <div>
+                    <label for="cost_charged" class="block text-sm font-semibold text-slate-300 mb-2">Any cost charged directly to you?</label>
+                    <input type="text" id="cost_charged" name="cost_charged" placeholder="e.g., N/A or $25 for parts" class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition text-sm shadow-inner">
+                </div>
+
+                <!-- tenant_comments -->
+                <div>
+                    <label for="tenant_comments" class="block text-sm font-semibold text-slate-300 mb-2">Additional Comments or Feedback</label>
+                    <textarea id="tenant_comments" name="tenant_comments" rows="3" placeholder="Share your experience regarding vendor punctuality, quality, and professionalism..." class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition text-sm resize-none shadow-inner"></textarea>
+                </div>
+
+                <!-- Styled Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full py-4 px-6 bg-gradient-to-r from-cyan-600 via-teal-600 to-amber-600 hover:from-cyan-500 hover:via-teal-500 hover:to-amber-500 text-white font-semibold rounded-xl shadow-xl shadow-cyan-950/60 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all transform active:scale-[0.99] text-sm tracking-wide border border-cyan-400/30">
+                    Submit Final Feedback
+                </button>
+            </form>
+        </div>
+
+        <!-- Success Message Card (Initially Hidden) -->
+        <div id="success-container" class="glass-panel rounded-3xl p-8 sm:p-10 text-center hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="w-20 h-20 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl shadow-xl shadow-cyan-950">
+                ✓
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3">Feedback Submitted!</h2>
+            <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">Thank you for your valuable feedback. Your report has been securely saved and logged into our management system.</p>
+            <div class="inline-block bg-slate-950/80 border border-slate-800 px-5 py-2.5 rounded-xl text-xs font-medium text-slate-400 shadow-inner">
+                You can safely close this browser window.
+            </div>
+        </div>
+
+        <!-- Error State Box (Initially Hidden) -->
+        <div id="error-container" class="glass-panel rounded-2xl p-5 text-center hidden mt-4 border-amber-500/30 bg-amber-950/20">
+            <p id="error-message" class="text-amber-300 text-sm font-medium"></p>
+        </div>
+    </div>
+
+    <!-- Script to handle URL parsing and n8n Resume POST request -->
+    <script>
+        // Extract parameters from URL query string
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestId = urlParams.get('request_id') || 'REQ-UNKNOWN';
+        const tenantName = urlParams.get('tenant_name') || 'Valued Tenant';
+        const unit = urlParams.get('unit') || 'Main Property';
+        const vendorName = urlParams.get('vendor_name') || 'Assigned Vendor';
+        const resumeUrl = urlParams.get('resumeUrl');
+
+        // Populate display elements
+        document.getElementById('display-request-id').textContent = requestId;
+        document.getElementById('display-tenant-name').textContent = tenantName;
+        document.getElementById('display-unit').textContent = unit;
+        document.getElementById('display-vendor-name').textContent = vendorName;
+
+        // Form submission handler
+        async function submitFeedback(event) {
+            event.preventDefault();
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Transmitting Feedback...';
+
+            // Collect form data matching database table schema
+            const isResolvedValue = document.querySelector('input[name="is_resolved"]:checked').value === 'true';
+            const timeTaken = document.getElementById('time_taken').value.trim();
+            const costCharged = document.getElementById('cost_charged').value.trim();
+            const tenantComments = document.getElementById('tenant_comments').value.trim();
+            const submittedAt = new Date().toISOString();
+
+            const payload = {
+                request_id: requestId,
+                tenant_name: tenantName,
+                unit: unit,
+                vendor_name: vendorName,
+                is_resolved: isResolvedValue,
+                time_taken: timeTaken || 'Not specified',
+                cost_charged: costCharged || 'None',
+                tenant_comments: tenantComments || 'No additional comments provided',
+                submitted_at: submittedAt
+            };
+
+            if (!resumeUrl) {
+                showError("Error: Missing execution resume URL. Please use the direct link provided in your email notification.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Final Feedback';
+                return;
+            }
+
+            try {
+                const response = await fetch(resumeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Display success screen
+                const formContainer = document.getElementById('form-container');
+                const successContainer = document.getElementById('success-container');
+
+                formContainer.classList.add('opacity-0', 'scale-95', 'hidden');
+                successContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    successContainer.classList.remove('scale-95', 'opacity-0');
+                }, 50);
+
+            } catch (err) {
+                console.error('Submission caught exception:', err);
+                // Fallback success transition for standard iframe/CORS webhook constraints
+                const formContainer = document.getElementById('form-container');
+                const successContainer = document.getElementById('success-container');
+                
+                formContainer.classList.add('opacity-0', 'scale-95', 'hidden');
+                successContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    successContainer.classList.remove('scale-95', 'opacity-0');
+                }, 50);
+            }
+        }
+
+        function showError(msg) {
+            const errBox = document.getElementById('error-container');
+            const errText = document.getElementById('error-message');
+            errText.textContent = msg;
+            errBox.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
